@@ -1,5 +1,4 @@
 ﻿using OnlineAuction.Sourcing.Entities;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,6 +12,6 @@ namespace OnlineAuction.Sourcing.Repository.Interfaces
         Task Create(Auction auction);
         Task<bool> Update(Auction auction);
         Task<bool> Delete(string id);
-            
+
     }
 }

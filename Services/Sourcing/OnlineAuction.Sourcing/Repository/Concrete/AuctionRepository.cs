@@ -1,5 +1,4 @@
-﻿using DnsClient.Internal;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using OnlineAuction.Sourcing.Data.Interfaces;
 using OnlineAuction.Sourcing.Entities;
 using OnlineAuction.Sourcing.Repository.Interfaces;
@@ -11,7 +10,7 @@ namespace OnlineAuction.Sourcing.Repository.Concrete
     public class AuctionRepository : IAuctionRepository
     {
         private readonly ISourcingContext _sourcingContext;
-      
+
 
         public AuctionRepository(ISourcingContext sourcingContext)
         {
@@ -26,14 +25,14 @@ namespace OnlineAuction.Sourcing.Repository.Concrete
         public async Task<bool> Delete(string id)
         {
             FilterDefinition<Auction> deletedFilter = Builders<Auction>.Filter.Eq(m => m.Id, id);
-            DeleteResult deleteResult= await _sourcingContext.Auctions.DeleteOneAsync(deletedFilter);
+            DeleteResult deleteResult = await _sourcingContext.Auctions.DeleteOneAsync(deletedFilter);
 
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
         }
 
         public async Task<Auction> GetAuction(string id)
         {
-           return await _sourcingContext.Auctions.Find(a => a.Id == id).FirstOrDefaultAsync();
+            return await _sourcingContext.Auctions.Find(a => a.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<Auction> GetAuctionByName(string name)
@@ -52,7 +51,7 @@ namespace OnlineAuction.Sourcing.Repository.Concrete
             var updateResult = await _sourcingContext.Auctions.ReplaceOneAsync(a => a.Id.Equals(auction.Id), auction);
 
             return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
-            
+
         }
     }
 }

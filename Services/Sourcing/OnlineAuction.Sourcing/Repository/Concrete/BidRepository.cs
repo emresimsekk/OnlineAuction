@@ -20,33 +20,33 @@ namespace OnlineAuction.Sourcing.Repository.Concrete
         public async Task<List<Bid>> GetBidsByAuctionId(string id)
         {
             FilterDefinition<Bid> filter = Builders<Bid>.Filter.Eq(a => a.AuctionId, id);
-            List<Bid>  bids=await _sourcingContext.Bids.Find(filter).ToListAsync();
+            List<Bid> bids = await _sourcingContext.Bids.Find(filter).ToListAsync();
 
             bids = bids.OrderByDescending(a => a.CreatedAt)
-                       .GroupBy(a=>a.SellerUsername)
-                       .Select(a=>new Bid 
-                       { 
-                            AuctionId=a.FirstOrDefault().AuctionId,
-                            Price=a.FirstOrDefault().Price,
-                            CreatedAt=a.FirstOrDefault().CreatedAt,
-                            SellerUsername=a.FirstOrDefault().SellerUsername,
-                            ProductId=a.FirstOrDefault().ProductId,
-                            Id=a.FirstOrDefault().Id
+                       .GroupBy(a => a.SellerUsername)
+                       .Select(a => new Bid
+                       {
+                           AuctionId = a.FirstOrDefault().AuctionId,
+                           Price = a.FirstOrDefault().Price,
+                           CreatedAt = a.FirstOrDefault().CreatedAt,
+                           SellerUsername = a.FirstOrDefault().SellerUsername,
+                           ProductId = a.FirstOrDefault().ProductId,
+                           Id = a.FirstOrDefault().Id
 
                        }).ToList();
-             
+
             return bids;
         }
 
         public async Task<Bid> GetWinnerBid(string id)
         {
-            List <Bid> bids= await GetBidsByAuctionId(id);
+            List<Bid> bids = await GetBidsByAuctionId(id);
             return bids.OrderByDescending(a => a.Price).FirstOrDefault();
         }
 
         public async Task SendBid(Bid bid)
         {
-             await _sourcingContext.Bids.InsertOneAsync(bid);
+            await _sourcingContext.Bids.InsertOneAsync(bid);
 
         }
     }

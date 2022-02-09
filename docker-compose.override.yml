@@ -25,3 +25,19 @@ services:
       #- ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
       - ${HOME}/ASP.NET/Https:/root/.aspnet/https/
       - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
+
+  onlineauction.sourcing:
+    container_name: onlineauctionsourcing
+
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "SourcingDatabaseSettings:ConnectionStrings=mongodb://onlineAuctionDb:27017"
+    depends_on:
+      - onlineAuctionDb
+    volumes:
+      #- ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${HOME}/ASP.NET/Https:/root/.aspnet/https/
+      - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
+    ports:
+      - "8001:80"
+
