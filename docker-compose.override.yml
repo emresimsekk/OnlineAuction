@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  onlineAuctionDb:
+    container_name: onlineAuctionDb
+    restart: always
+    volumes:
+        - ${WEBAPP_STORAGE_HOME}/site:/data/db
+        #- ./data:/data/db
+    ports:
+        - "27017:27017"
+    
+  onlineauction.product:
+    container_name: onlineauctionproduct
+
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:443;http://+:80
+      - "ProductDatabaseSettings:ConnectionStrings=mongodb://onlineAuctionDb:27017"
+    depends_on:
+        - onlineAuctionDb
+    ports:
+      - "8000:80"
+    volumes:
+      #- ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${HOME}/ASP.NET/Https:/root/.aspnet/https/
+      - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
