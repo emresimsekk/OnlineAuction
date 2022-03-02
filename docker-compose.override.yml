@@ -9,7 +9,22 @@ services:
         #- ./data:/data/db
     ports:
         - "27017:27017"
-    
+
+  rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+        - "5672:5672"
+        - "15672:15672"
+   
+  onlineauctionSqlDb:
+    container_name: onlineauctionSqlDb
+    ports:
+        - "1433:1433"
+    environment:
+       SA_PASSWORD: "Odb12345678"
+       ACCEPT_EULA: "Y"
+
   onlineauction.product:
     container_name: onlineauctionproduct
 
@@ -22,22 +37,37 @@ services:
     ports:
       - "8000:80"
     volumes:
-      #- ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
       - ${HOME}/ASP.NET/Https:/root/.aspnet/https/
       - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
 
   onlineauction.sourcing:
     container_name: onlineauctionsourcing
-
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "SourcingDatabaseSettings:ConnectionStrings=mongodb://onlineAuctionDb:27017"
+      - "EventBus:HostName=rabbitmq"
     depends_on:
       - onlineAuctionDb
+      - rabbitmq
     volumes:
-      #- ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
       - ${HOME}/ASP.NET/Https:/root/.aspnet/https/
       - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
     ports:
       - "8001:80"
+
+
+  onlineauction.order:
+    container_name: onlineauctionorder
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:OrderConnection=Server=onlineauctionSqlDb;Database=OrderDb;User Id=sa;Password=Odb12345678;"
+      - "EventBus:HostName=rabbitmq"
+    depends_on:
+      - onlineauctionSqlDb
+      - rabbitmq
+    volumes:
+      - ${HOME}/ASP.NET/Https:/root/.aspnet/https/
+      - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
+    ports:
+      - "8002:80"
 

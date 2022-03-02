@@ -3,6 +3,13 @@ version: '3.4'
 services:
   onlineAuctionDb:
     image: mongo
+
+  rabbitmq:
+    image: rabbitmq:3-management
+
+  onlineauctionSqlDb:
+    image: mcr.microsoft.com/mssql/server
+
   onlineauction.product:
     image: ${DOCKER_REGISTRY-}onlineauctionproduct
     build:
@@ -14,4 +21,11 @@ services:
     build:
       context: .
       dockerfile: Services/Sourcing/OnlineAuction.Sourcing/Dockerfile
+
+
+  onlineauction.order:
+    image: ${DOCKER_REGISTRY-}onlineauctionorder
+    build:
+      context: .
+      dockerfile: Services/Order/OnlineAuction.Order/Dockerfile
 

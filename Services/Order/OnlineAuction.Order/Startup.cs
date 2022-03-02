@@ -1,21 +1,18 @@
 using EventBusRabbitMQ;
-using EventBusRabbitMQ.Producer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using OnlineAuction.Sourcing.Data.Concrete;
-using OnlineAuction.Sourcing.Data.Interfaces;
-using OnlineAuction.Sourcing.Repository.Concrete;
-using OnlineAuction.Sourcing.Repository.Interfaces;
-using OnlineAuction.Sourcing.Settings;
+using OnlineAuction.Infrastructure.Extensions;
+using OnlineAuction.Order.Consumers;
+using OnlineAuction.Order.Extensions;
+using OnlineAuctionApplication.Extensions;
 using RabbitMQ.Client;
 
-namespace OnlineAuction.Sourcing
+namespace OnlineAuction.Order
 {
     public class Startup
     {
@@ -29,16 +26,19 @@ namespace OnlineAuction.Sourcing
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            #region Configurations Dependencies 
-            services.Configure<SourcingDatabaseSettings>(Configuration.GetSection(nameof(SourcingDatabaseSettings)));
-            services.AddSingleton<ISourcingDatabaseSettings>(sp => sp.GetRequiredService<IOptions<SourcingDatabaseSettings>>().Value);
+
+            services.AddControllers();
+
+            #region AddApplication
+
+            services.AddApplication();
+
             #endregion
 
-            #region Project Dependencies
-            services.AddTransient<ISourcingContext, SourcingContext>();
-            services.AddTransient<IAuctionRepository, AuctionRepository>();
-            services.AddTransient<IBidRepository, BidRepository>();
-            services.AddAutoMapper(typeof(Startup));
+            #region AddInfrastructure
+
+            services.AddInfrastructure(Configuration);
+
             #endregion
 
             #region Swagger Dependencies
@@ -46,7 +46,7 @@ namespace OnlineAuction.Sourcing
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "OnlineAuction.Sourcing",
+                    Title = "OnlineAuction.Order",
                     Version = "v1"
                 });
             });
@@ -81,24 +81,20 @@ namespace OnlineAuction.Sourcing
                 return new DefaultRabbitMQPersistentConnection(factory, retryCount, logger);
             });
 
-            services.AddSingleton<EventBusRabbitMQProducer>();
+
+            services.AddSingleton<EventBusOrderCreateConsumer>();
 
             #endregion
 
 
-
-            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OnlineAuction.Sourcing v1"));
             }
 
             app.UseRouting();
@@ -109,6 +105,11 @@ namespace OnlineAuction.Sourcing
             {
                 endpoints.MapControllers();
             });
+
+            app.UseRabbitListener();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OnlineAuction.Order v1"));
         }
     }
 }
