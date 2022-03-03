@@ -23,19 +23,21 @@ namespace OnlineAuction.Order.Consumers
 
         public EventBusOrderCreateConsumer(IRabbitMQPersistentConnection persistentConnection, IMediator mediator, IMapper mapper)
         {
-            _persistentConnection = persistentConnection;
-            _mediator = mediator;
-            _mapper = mapper;
+            _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-        
+
         public void Counsume()
         {
             if (!_persistentConnection.IsConnected)
             {
                 _persistentConnection.TryConnect();  
             }
+
             var channel = _persistentConnection.CreateModel();
             channel.QueueDeclare(queue: EventBusConstants.OrderCreateQueue, durable: false, exclusive: false, autoDelete: false, arguments: null);
+
             var consumer = new EventingBasicConsumer(channel);
 
             consumer.Received += ReceivedEvent;
@@ -62,5 +64,7 @@ namespace OnlineAuction.Order.Consumers
         {
             _persistentConnection.Dispose();
         }
+
+      
     }
 }

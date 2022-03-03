@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Product", "Product", "{3AE8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineAuction.Product", "Services\Product\OnlineAuction.Product\OnlineAuction.Product.csproj", "{E836E306-8985-4B29-BE18-C3A0F384B900}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{B8C8927F-3659-469B-A70E-8649A0DEE06E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways", "{B8C8927F-3659-469B-A70E-8649A0DEE06E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{8BA2A675-DB9E-4B86-B4D5-E9D277E8A15E}"
 EndProject
@@ -23,13 +23,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{6F802E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBusRabbitMQ", "Services\Common\EventBusRabbitMQ\EventBusRabbitMQ.csproj", "{F49C0237-0B8F-4E9F-A5B9-D6B18ED6A174}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Order", "Services\Order\OnlineAuction.Order\OnlineAuction.Order.csproj", "{BB170F08-617F-4784-96C3-F3662C4C09CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineAuction.Order", "Services\Order\OnlineAuction.Order\OnlineAuction.Order.csproj", "{BB170F08-617F-4784-96C3-F3662C4C09CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Domain", "Services\Order\OnlineAuction.Domain\OnlineAuction.Domain.csproj", "{A764FBC0-BF9B-498D-9887-2E43DA0F6BC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineAuction.Domain", "Services\Order\OnlineAuction.Domain\OnlineAuction.Domain.csproj", "{A764FBC0-BF9B-498D-9887-2E43DA0F6BC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuctionApplication", "Services\Order\OnlineAuctionApplication\OnlineAuctionApplication.csproj", "{7A55204C-C729-4ACD-95A6-55F90FA4CC3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineAuctionApplication", "Services\Order\OnlineAuctionApplication\OnlineAuctionApplication.csproj", "{7A55204C-C729-4ACD-95A6-55F90FA4CC3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Infrastructure", "Services\Order\OnlineAuction.Infrastructure\OnlineAuction.Infrastructure.csproj", "{1ED69D04-014F-4A53-84F3-C7EED33B4169}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineAuction.Infrastructure", "Services\Order\OnlineAuction.Infrastructure\OnlineAuction.Infrastructure.csproj", "{1ED69D04-014F-4A53-84F3-C7EED33B4169}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.ApiGateway", "ApiGateway\OnlineAuction.ApiGateway\OnlineAuction.ApiGateway.csproj", "{1C195E5D-FBC9-469E-AB66-089A16A3C103}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{1ED69D04-014F-4A53-84F3-C7EED33B4169}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1ED69D04-014F-4A53-84F3-C7EED33B4169}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1ED69D04-014F-4A53-84F3-C7EED33B4169}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C195E5D-FBC9-469E-AB66-089A16A3C103}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C195E5D-FBC9-469E-AB66-089A16A3C103}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C195E5D-FBC9-469E-AB66-089A16A3C103}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C195E5D-FBC9-469E-AB66-089A16A3C103}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{A764FBC0-BF9B-498D-9887-2E43DA0F6BC1} = {8BA2A675-DB9E-4B86-B4D5-E9D277E8A15E}
 		{7A55204C-C729-4ACD-95A6-55F90FA4CC3B} = {8BA2A675-DB9E-4B86-B4D5-E9D277E8A15E}
 		{1ED69D04-014F-4A53-84F3-C7EED33B4169} = {8BA2A675-DB9E-4B86-B4D5-E9D277E8A15E}
+		{1C195E5D-FBC9-469E-AB66-089A16A3C103} = {B8C8927F-3659-469B-A70E-8649A0DEE06E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F38B6AF-F3F2-42D2-A859-0919368258BA}

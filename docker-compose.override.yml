@@ -35,7 +35,7 @@ services:
     depends_on:
         - onlineAuctionDb
     ports:
-      - "8000:80"
+      - "8003:80"
     volumes:
       - ${HOME}/ASP.NET/Https:/root/.aspnet/https/
       - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
@@ -70,4 +70,19 @@ services:
       - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
     ports:
       - "8002:80"
+
+
+  onlineauction.apigateway:
+    container_name: onlineauctionapigateway
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - onlineauction.product
+      - onlineauction.sourcing
+      - onlineauction.order
+    ports:
+      - "5000:80"
+    volumes:
+      - ${HOME}/ASP.NET/Https:/root/.aspnet/https/
+      - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
 
