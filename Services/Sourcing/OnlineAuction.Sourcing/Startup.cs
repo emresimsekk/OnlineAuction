@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using OnlineAuction.Sourcing.Data.Concrete;
 using OnlineAuction.Sourcing.Data.Interfaces;
+using OnlineAuction.Sourcing.Hubs;
 using OnlineAuction.Sourcing.Repository.Concrete;
 using OnlineAuction.Sourcing.Repository.Interfaces;
 using OnlineAuction.Sourcing.Settings;
@@ -85,7 +86,16 @@ namespace OnlineAuction.Sourcing
 
             #endregion
 
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()
+                        .WithOrigins("https://localhost:44335");
 
+            }));
+            services.AddSignalR();
 
             services.AddControllers();
         }
@@ -104,9 +114,10 @@ namespace OnlineAuction.Sourcing
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseCors("CorsPolicy");
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<AuctionHub>("/auctionhub");
                 endpoints.MapControllers();
             });
         }
